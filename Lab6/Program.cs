@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace Lab6
 {
@@ -10,7 +11,8 @@ namespace Lab6
     {
         static void Main(string[] args)
         {
-            string EnglishWord;
+            string EnglishWord, PigLatin;
+            string[] Sentence;
             bool RunProgram = true;
             bool DoAgain;
 
@@ -23,16 +25,24 @@ namespace Lab6
                 Console.WriteLine("Please enter a word to be translated into Pig Latin:");
 
                 EnglishWord = Console.ReadLine().ToLower();
-                //EnglishWord = Console.ReadLine();
+                //EnglishWord = Console.ReadLine(); ...amend to accept and keep case from user input
 
-                if ("aeiouAEIOU".Contains(EnglishWord[0])) //if word begins with vowel
+                //validate that input is not empty
+                while(Regex.Match(EnglishWord,@"^\s*$").Success)
                 {
-                    Console.WriteLine(VowelFirst(EnglishWord));
+                    Console.Clear();
+                    Console.WriteLine("Not a valid input, please try again.");
+                    EnglishWord = Console.ReadLine();
                 }
-                else //if word begins with consonant
-                {
-                    Console.WriteLine(ConsFirst(EnglishWord));
-                }
+                
+                    if ("aeiouAEIOU".Contains(EnglishWord[0])) //if word begins with vowel
+                    {
+                        Console.WriteLine(VowelFirst(EnglishWord));
+                    }
+                    else //if word begins with consonant
+                    {
+                        Console.WriteLine(ConsFirst(EnglishWord));
+                    }
 
                 DoAgain = false;
 
@@ -81,5 +91,9 @@ namespace Lab6
 
             return NewWord+Prefix+"ay";
         }
+        //public static string PigLatin(string Word)
+        //{
+
+        //}
     }
 }
