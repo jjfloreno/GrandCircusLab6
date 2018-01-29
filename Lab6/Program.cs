@@ -11,8 +11,7 @@ namespace Lab6
     {
         static void Main(string[] args)
         {
-            string EnglishWord, PigLatin;
-            string[] Sentence;
+            string Sentence;
             bool RunProgram = true;
             bool DoAgain;
 
@@ -22,27 +21,20 @@ namespace Lab6
                 System.Threading.Thread.Sleep(500);
 
                 //input & convert to lowercase
-                Console.WriteLine("Please enter a word to be translated into Pig Latin:");
+                Console.WriteLine("Please enter a sentence to be translated into Pig Latin:");
 
-                EnglishWord = Console.ReadLine().ToLower();
-                //EnglishWord = Console.ReadLine(); ...amend to accept and keep case from user input
+                Sentence = Console.ReadLine().ToLower();
 
                 //validate that input is not empty
-                while(Regex.Match(EnglishWord,@"^\s*$").Success)
+                while (Regex.Match(Sentence, @"^\s*$").Success)
                 {
                     Console.Clear();
                     Console.WriteLine("Not a valid input, please try again.");
-                    EnglishWord = Console.ReadLine();
+                    Sentence = Console.ReadLine();
                 }
-                
-                    if ("aeiouAEIOU".Contains(EnglishWord[0])) //if word begins with vowel
-                    {
-                        Console.WriteLine(VowelFirst(EnglishWord));
-                    }
-                    else //if word begins with consonant
-                    {
-                        Console.WriteLine(ConsFirst(EnglishWord));
-                    }
+
+                //if validation passed, print result
+                Console.WriteLine(TranslatePigLatin(Sentence));
 
                 DoAgain = false;
 
@@ -78,22 +70,31 @@ namespace Lab6
                 }
             }
         }
-        public static string VowelFirst(string Word)
+        public static string TranslatePigLatin(string sentence)
         {
-            return Word + "way";
-        }
-        public static string ConsFirst(string Word)
-        {
-            char[] Vowels = { 'a', 'e', 'i', 'o', 'u', 'A','E','I','O','U' };
-            int VowelIndex = Word.IndexOfAny(Vowels); //finds index of first vowel
-            string Prefix = Word.Substring(0,VowelIndex); //finds the letters up to the first vowel
-            string NewWord = Word.Substring(VowelIndex); //gets the letters after the first vowel
+            List<string> PigLatin = new List<string>();
 
-            return NewWord+Prefix+"ay";
-        }
-        //public static string PigLatin(string Word)
-        //{
+            foreach (string word in sentence.Split(' '))
+            {
+                if ("aeiouAEIOU".Contains(word[0])) //if word begins with vowel
+                {
+                    PigLatin.Add(word + "way");
+                }
+                else if (Regex.Match(word, @"[^A-Za-z\.\,\'\!\?]").Success) //if word contains special characters or numbers
+                {
+                    PigLatin.Add(word);
+                }
+                else //if word begins with consonant
+                {
+                    char[] Vowels = { 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U' };
+                    int VowelIndex = word.IndexOfAny(Vowels); //finds index of first vowel
+                    string Prefix = word.Substring(0, VowelIndex); //finds the letters up to the first vowel
+                    string NewWord = word.Substring(VowelIndex); //gets the letters after the first vowel
 
-        //}
+                    PigLatin.Add(NewWord + Prefix + "ay");
+                }
+            }
+            return string.Join(" ", PigLatin);
+        }
     }
 }
