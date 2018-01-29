@@ -76,13 +76,13 @@ namespace Lab6
 
             foreach (string word in sentence.Split(' '))
             {
-                if ("aeiouAEIOU".Contains(word[0])) //if word begins with vowel
-                {
-                    PigLatin.Add(word + "way");
-                }
-                else if (Regex.Match(word, @"[^A-Za-z\.\,\'\!\?]").Success) //if word contains special characters or numbers
+                if (Regex.Match(word, @"[^A-Za-z\.\,\'\!\?]").Success) //if word contains special characters or numbers 
                 {
                     PigLatin.Add(word);
+                }
+                else if (Regex.Match(word, "^[aeiouAEIOU]").Success) //if word begins with vowel
+                {
+                    PigLatin.Add(word + "way");
                 }
                 else //if word begins with consonant
                 {
